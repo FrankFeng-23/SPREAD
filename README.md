@@ -15,7 +15,7 @@
         </div>
         <br />
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="https://www.cambridge.org/engage/coe/article-details/657491c25bc9fcb5c9727f79">Download Dataset :bookmark_tabs:</a>
+            <a href="https://www.cambridge.org/engage/coe/article-details/657491c25bc9fcb5c9727f79">Download Dataset 🌐</a>
             <a href="https://www.cambridge.org/engage/coe/article-details/657491c25bc9fcb5c9727f79">View Our Paper :bookmark_tabs:</a>
             <a href="https://github.com/MingyueX/GreenLens/issues">Report Bug :hammer_and_wrench:</a>
             <a href="https://github.com/MingyueX/GreenLens/issues">Request Feature 🙋</a>
