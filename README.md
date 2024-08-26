@@ -1,5 +1,5 @@
 # Synthetic Photo-Realistic Arboreal Dataset (SPREAD)
-
+<a name="readme-top"></a>
 <div>
     <a align="center">
         <img src="images\logo_banner.png"> 
@@ -8,9 +8,9 @@
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h3 style="margin: 0;">Photo-realistic forest dataset and its data collection framework :evergreen_tree:</h3>
             <div>
-                <a href="#" style="margin-right: 5px;">简体中文</a>
+                <a href="README-zh.md" style="margin-right: 5px;">简体中文</a>
                 <span>|</span>
-                <a href="#" style="margin-left: 5px;">English</a>
+                <a style="margin-left: 5px;">English</a>
             </div>
         </div>
         <br />
@@ -31,50 +31,142 @@ SPREAD is a synthetic dataset for image-based visual tasks in forestry. The curr
 <!-- [![GitHub](https://img.shields.io/github/license/emalderson/ThePhish)](https://github.com/emalderson/ThePhish/blob/master/LICENSE) -->
 
 
-## Table of contents
-
+## Table of Contents
 - [Synthetic Photo-Realistic Arboreal Dataset (SPREAD)](#synthetic-photo-realistic-arboreal-dataset-spread)
-	- [Table of contents](#table-of-contents)
-	- [Overview](#overview)
-	- [自定义你的数据集](#自定义你的数据集)
-		- [1. 创建你的游戏关卡](#1-创建你的游戏关卡)
-		- [2.配置Colosseum](#2配置colosseum)
-		- [3.配置数据收集框架](#3配置数据收集框架)
-			- [Step 1: 将BP\_SPREAD\_FunctionKit.uasset、LeafMaterial.uasset](#step-1-将bp_spread_functionkituassetleafmaterialuasset)
+  - [Table of Contents](#table-of-contents)
+  - [Dataset Overview 🌲](#dataset-overview-)
+  - [Customize Your Dataset ⚙](#customize-your-dataset-)
+    - [1. Create Your Game Level](#1-create-your-game-level)
+    - [2. Configure Colosseum](#2-configure-colosseum)
+    - [3. Configure Data Collection Framework](#3-configure-data-collection-framework)
+      - [Main\_Map Configuration](#main_map-configuration)
+      - [Landscape\_Map Configuration](#landscape_map-configuration)
+      - [Configure Which Parts of Meshes Are Highlighted](#configure-which-parts-of-meshes-are-highlighted)
+      - [Configure Python Scripts](#configure-python-scripts)
+    - [4. Start Data Collection](#4-start-data-collection)
+  - [Contributing 💪](#contributing-)
+  - [License 📖](#license-)
+  - [Contact 📞](#contact-)
 
-## Overview
+   
+## Dataset Overview 🌲
+One of the primary motivations for creating SPREAD was to address the scarcity of annotated forest imagery and forest inventory data in the real world. therefore, we leveraged unreal engine 5 to create highly realistic virtual scenes that closely resemble real-world environments, where we collected accurately annotated images and precise tree parameters. we considered tree distribution, background context, and dataset application scenarios to construct three types of environments: forests, urban areas, and plantations.
 
-The following diagram shows how ThePhish works at high-level:
+For the forest environment, SPREAD currently includes six different forest scenes, each representing a distinct biome: tropical rainforest, redwood forest, birch forest, burned forest, meadow forest, and deciduous forest. for urban environments, we considered elements that could interfere with tree detection and segmentation, such as utility poles, fire hydrants, and complex backgrounds. we built four urban scenes: two distinct downtown areas, a suburban area, and an urban park. additionally, we developed a plantation scene where fruit trees are neatly arranged, growing uniformly in the same plot.
 
-<img src="pipeline_overview.png" width="700">
+In terms of image modalities, SPREAD includes RGB, depth maps, semantic segmentation maps, and instance segmentation maps. at the same time, beyond near-ground samples, SPREAD also includes drone-view images, thereby supporting canopy segmentation tasks. some example images are shown below.
 
- 1. An attacker starts a phishing campaign and sends a phishing email to a user.
- 2. A user who receives such an email can send that email as an attachment to the mailbox used by ThePhish.
- 3. The analyst interacts with ThePhish and selects the email to analyze.
- 4. ThePhish extracts all the observables from the email and creates a case on TheHive. The observables are analyzed thanks to Cortex and its analyzers.
- 5. ThePhish calculates a verdict based on the verdicts of the analyzers.
- 6. If the verdict is final, the case is closed and the user is notified. In addition, if it is a malicious email, the case is exported to MISP.
- 7. If the verdict is not final, the analyst's intervention is required. He must review the case on TheHive along with the results given by the various analyzers to formulate a verdict, then he can send the notification to the user, optionally export the case to MISP and close the case.
+![Sample](images/sample_images_compressed-min.png)
 
-## 自定义你的数据集
+SPREAD contains approximately 37,000 ground samples and 19,000 drone-view samples. each sample includes RGB images, depth maps, segmentation maps, point clouds, metadata, and parameters for all trees within the field of view (tree ID, location, DBH, height, and canopy diameter). basic information about each scene and the distribution of key tree parameters are shown in the diagram below (b). all samples were collected under up to 11 different weather conditions, with weather distribution shown in the diagram below (c).
 
-SPREAD通过一个高度可扩展、可自定义的数据收集框架获取，你可以将这个框架利用到你的自定义游戏关卡中来收集RGB、深度图以及分割图。以下步骤需要你对于UE5、蓝图以及Python有一定的了解。
+![DatasetDistribution](images/data_distribution-min.png)
 
-### 1. 创建你的游戏关卡
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-你可以在虚幻市场找到更多不可思议的、精美制作的环境资产包。你可以对于这些资产包中的演示关卡进行微调从而构建一个能够使用SPREAD数据收集框架的新关卡。如果想要最小程度地修改数据收集框架，主要游戏关卡（假设命名为Main_Map）需要满足的条件如下：
-- 关卡必须包含Landscape，InstancedFoliageActor（石头、灌木等等）、静态网格体演员（树木）以及Ultra Dynamic Sky和Weather（一个不可思议的[天气插件](https://www.unrealengine.com/marketplace/en-US/product/ultra-dynamic-sky)）。
-- 我们强调游戏关卡中每一棵树木必须是静态网格体演员。通过UE5程序化生成的树木往往也会以InstancedFoliageActor的形式存在，这种情况下，你需要将这些树木转换为静态网格体演员。你可能会发现[MultiTool](https://www.unrealengine.com/marketplace/en-US/product/multitool-quick-batch-operations-on-assets)对于这样的转换非常有用。
-- 关卡中树木的命名必须以Tree开头，并一起放在一个名为Tree的文件夹中。我们建议以Tree0, Tree1, Tree2这样的方式命名树木。对于这样的批量命名，可以借助[Multi Objects Renaming Tool插件](https://www.unrealengine.com/marketplace/en-US/product/multi-objects-renaming-tool)。
+<!-- ## SPREAD Effectiveness
+We demonstrate the significant potential of SPREAD using the example task of trunk semantic segmentation. -->
 
-除此之外，你还需要制作一个仅包含Landscape的关卡（假设命名为：Landscape_Map），这个关卡在后续用于获取地面点的信息，以确定拍摄图像时相机的高度。
+## Customize Your Dataset ⚙
 
-如果获取上述插件或者资产包有困难，那么你可以参考XX进行代码、蓝图的修改，将缺失组件对应的代码、蓝图注释掉或者删除。
+SPREAD was collected using a highly scalable and customizable data collection framework, which you can utilize in your custom game levels to collect RGB, depth maps, and segmentation maps. the following steps require some familiarity with UE5, blueprints, and Python.
 
-### 2.配置Colosseum
+### 1. Create Your Game Level
 
-我们建议参考AirSim（Colosseum的祖先）的[详细文档](https://microsoft.github.io/AirSim/unreal_custenv/)来配置Colosseum。当你能成功地在Main_Map中以AirSimGameMode运行关卡时，证明你已经成功配置了Colosseum。
+You can find more amazing, beautifully crafted environment asset packs in the Unreal Marketplace. you can fine-tune the demo levels of these asset packs to create a new level that can use the SPREAD data collection framework. if you want to minimally modify the data collection framework, the main game level (assumed to be named Main_Map) should meet the following criteria:
+- The level must include a landscape, instanced foliage actor (rocks, shrubs, etc.), static mesh actors (trees), and ultra dynamic sky and weather (an amazing [weather plugin](https://www.unrealengine.com/marketplace/en-US/product/ultra-dynamic-sky)).
+- We emphasize that every tree in the game level must be a static mesh actor. trees generated procedurally in UE5 are often represented as instanced foliage actors, in which case, you need to convert these trees into static mesh actors. you may find the [MultiTool](https://www.unrealengine.com/marketplace/en-US/product/multitool-quick-batch-operations-on-assets) plugin very useful for such conversions.
+- The trees in the level must be named starting with "Tree" and placed together in a folder named "Tree." we recommend naming trees as Tree0, Tree1, Tree2, etc. for batch renaming, you can use the [Multi Objects Renaming Tool plugin](https://www.unrealengine.com/marketplace/en-US/product/multi-objects-renaming-tool).
 
-### 3.配置数据收集框架
+In addition, you need to create a level that only contains a landscape (assumed to be named: Landscape_Map), which will be used later to obtain ground point information, determining the camera height when capturing images.
 
-#### Step 1: 将BP_SPREAD_FunctionKit.uasset、LeafMaterial.uasset 
+If obtaining the plugins or asset packs mentioned above is challenging, you can refer to XX for code or blueprint modifications, annotating or removing missing components' code or blueprints.
+
+### 2. Configure Colosseum
+
+We recommend referring to the [detailed documentation](https://microsoft.github.io/AirSim/unreal_custenv/) of AirSim (the predecessor of Colosseum) to configure Colosseum. when you can successfully run the level in Main_Map with the AirSimGameMode, it indicates that you have successfully configured Colosseum.
+
+### 3. Configure Data Collection Framework
+#### Main_Map Configuration
+- Step 1: Place the BP_FunctionKit.uasset, Trunk_Highlighter.uasset, LandscapeSampler.uasset files from the UE_Assets folder into your current UE project.
+- Step 2: Drag the BP_FunctionKit into the Main_Map, then double-click to view its blueprint graph and ensure that all nodes in the blueprint are displayed correctly.
+- Step 3: Open the level blueprint of Main_Map, copy the level blueprint from [this URL](https://www.baidu.com) into your level blueprint. check if all nodes in the level blueprint are displayed correctly. if not, you need to manually connect these nodes. this completes the configuration of Main_Map.
+#### Landscape_Map Configuration
+- Step 1: Copy the landscape from Main_Map into Landscape_Map and ensure that the landscape's name is "LandScape."
+- Step 2: Drag the LandscapeSampler into Landscape_Map, then double-click it and set the sampling parameters and file saving path. by default, sampling is done every 30cm.
+#### Configure Which Parts of Meshes Are Highlighted
+Review the asset details of each static mesh (tree) in the level individually, select the material index for the slots belonging to the leaf parts, and record them in the leaf_material_index.xlsx file in the format "SM_Name Leaf_Material_Index." if your trees have multiple leaf parts, separate each material index with a space.
+
+#### Configure Python Scripts
+- Step 1: Install all the required Python libraries
+```python
+pip install -r requirements.txt
+```
+- Step 2: Modify the parameters in the `data_collection.py` file
+```python
+# Modify these parameters
+NUMBER_OF_SAMPLES = 3000 # Number of samples you want to collect
+MIN_CAPTURE_DISTANCE= 1 # Minimum distance from the camera to the tree
+MAX_CAPTURE_DISTANCE = 5 # Maximum distance from the camera to the tree
+CAPTURE_HIEGHT = 2 # Camera height
+MAX_YAW_DEVIATION = 20 # Maximum yaw deviation of the camera
+MAX_PITCH_DEVIATION = 3 # Maximum pitch deviation of the camera
+MAX_ROLL_DEVIATION = 3 # Maximum roll deviation of the camera
+MAX_DISTANCE_TO_OBJECT = 200 # Objects beyond this distance will not be recorded in the segmentation map
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### 4. Start Data Collection
+- Step 1: Run the Landscape_Map level, which will generate a landscape_info.txt file at the path you set, containing ground point information.
+- Step 2: Exit the Landscape_Map level, open the Main_Map level, and run the level in AirSimGameMode.
+- Step 3: Run the data_collection.py script, which will generate RGB, depth maps, and segmentation maps at the path you set.
+- Step 4 (optional): Run the generate_segmentation_product.ipynb script to generate semantic segmentation maps. alternatively, you can generate other segmentation products from the instance segmentation maps according to your needs.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+## Contributing 💪
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License 📖
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact 📞
+
+Our Group Link: [Energy and Environment Group](https://www.cst.cam.ac.uk/research/eeg)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- CITATION -->
+<!-- ## Citation 📚
+```
+@article{feng2023trunk,
+  title={A Trunk Diameter Estimation Mobile App for the Masses},
+  author={Feng, Zhengpeng and Xie, Mingyue and Holcomb, Amelia and Keshav, Srinivasan},
+  booktitle={Cambridge Open Engage. doi:10.33774/coe-2023-6z4wb-v2}
+  year={2023}
+}
+``` -->
