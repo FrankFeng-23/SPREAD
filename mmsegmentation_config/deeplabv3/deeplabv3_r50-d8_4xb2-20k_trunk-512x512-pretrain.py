@@ -11,4 +11,4 @@ train_dataloader = dict(batch_size=8, num_workers=8)
 val_dataloader = dict(batch_size=1, num_workers=8)
 test_dataloader = dict(batch_size=1, num_workers=8)
 
-runner = dict(type='EpochBasedRunner', max_epochs=75)
+runner = dict(type='EpochBasedRunner', max_epochs=150)
