@@ -11,9 +11,9 @@ param_scheduler = [
         end=150,
         by_epoch=True)
 ]
-# training schedule for 20k
+# training schedule for 150 epochs
 # train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=1000)
-train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=75, val_interval=5)
+train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=150, val_interval=5)
 # train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=75, val_interval=5)
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
@@ -21,7 +21,7 @@ default_hooks = dict(
     # timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=10, log_metric_by_epoch=True),
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=True, interval=20, save_best='mIoU'),
+    checkpoint=dict(type='CheckpointHook', by_epoch=True, interval=10, save_best='mIoU'),
     # checkpoint=dict(type='CheckpointHook', by_epoch=True, interval=1, save_best='mIoU'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
