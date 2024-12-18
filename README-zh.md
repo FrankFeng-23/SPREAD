@@ -15,7 +15,7 @@
         </div>
         <br />
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="https://pan.baidu.com/s/1Gzw74DLmw58por6eF70KlA?pwd=nrhw">下载数据集 🌐</a>
+            <a href="https://zenodo.org/records/13570934">下载数据集 🌐</a>
             <a href="https://github.com/FrankFeng-23/SPREAD">查看我们的论文 :bookmark_tabs:</a>
             <a href="https://github.com/FrankFeng-23/SPREAD/issues">报告问题 :hammer_and_wrench:</a>
             <a href="https://github.com/FrankFeng-23/SPREAD/issues">请求新功能 🙋</a>
