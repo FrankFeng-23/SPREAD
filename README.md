@@ -36,6 +36,7 @@ SPREAD is a synthetic dataset for image-based visual tasks in forestry. The curr
 - [Synthetic Photo-Realistic Arboreal Dataset (SPREAD)](#synthetic-photo-realistic-arboreal-dataset-spread)
   - [Table of Contents](#table-of-contents)
   - [Dataset Overview 🌲](#dataset-overview-)
+  - [Get Tree Parameters ℹ️](#get-tree-parameters-ℹ️)
   - [Customize Your Dataset ⚙](#customize-your-dataset-)
     - [1. Create Your Game Level](#1-create-your-game-level)
     - [2. Configure Colosseum](#2-configure-colosseum)
@@ -67,6 +68,24 @@ SPREAD contains approximately 37,000 ground samples and 19,000 drone-view sample
 
 <!-- ## SPREAD Effectiveness
 We demonstrate the significant potential of SPREAD using the example task of trunk semantic segmentation. -->
+
+## Get Tree Parameters ℹ️
+To identify the trees within a given image and retrieve their corresponding parameters, please refer to the figure below. As an example from the broadleaf dataset, the following key files can be found in the dataset uploaded to Zenodo:
+- rgb/Tree0_1720149451.png
+- instance_segmentation/Tree0_1720149451.png
+- instance_segmentation/Tree0_1720149451.txt
+- color_palette.xlsx
+- obj_info_final.xlsx
+
+![Guidance](images/user_guidance(1).png)
+
+To extract detailed information about all the trees in a given RGB image, follow these four steps illustrated in the figure above:
+- Step 1. Extract all the RGB values from the instance segmentation map.
+- Step 2. Cross-reference these RGB values with color_palette.xlsx to identify the corresponding color index.
+- Step 3. Use the color index to find the tree IDs in the corresponding metadata file (.txt) under instance_segmentation folder.
+- Step 4. Input the obtained tree IDs into obj_info_final.xlsx to retrieve the trees’ location information and parameters.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Customize Your Dataset ⚙
 
