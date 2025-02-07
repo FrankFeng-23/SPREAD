@@ -49,6 +49,7 @@ SPREAD is a synthetic dataset for image-based visual tasks in forestry. The curr
   - [Contributing 💪](#contributing-)
   - [License 📖](#license-)
   - [Contact 📞](#contact-)
+  - [Citation 📚](#citation-)
 
    
 ## Dataset Overview 🌲
@@ -181,12 +182,12 @@ Our Group Link: [Energy and Environment Group](https://www.cst.cam.ac.uk/researc
 
 
 <!-- CITATION -->
-<!-- ## Citation 📚
+## Citation 📚
 ```
-@article{feng2023trunk,
-  title={A Trunk Diameter Estimation Mobile App for the Masses},
-  author={Feng, Zhengpeng and Xie, Mingyue and Holcomb, Amelia and Keshav, Srinivasan},
-  booktitle={Cambridge Open Engage. doi:10.33774/coe-2023-6z4wb-v2}
-  year={2023}
+@article{feng2024spread,
+  title={Spread: A Large-Scale, High-Fidelity Synthetic Dataset for Multiple Forest Vision Tasks},
+  author={Feng, Zhengpeng and She, Yihang and Keshav, Srinivasan},
+  booktitle={SSRN: https://ssrn.com/abstract=4977986}
+  year={2024}
 }
-``` -->
+```
