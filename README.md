@@ -184,10 +184,14 @@ Our Group Link: [Energy and Environment Group](https://www.cst.cam.ac.uk/researc
 <!-- CITATION -->
 ## Citation 📚
 ```
-@article{feng2024spread,
-  title={Spread: A Large-Scale, High-Fidelity Synthetic Dataset for Multiple Forest Vision Tasks},
+@article{feng2025spread,
+  title={SPREAD: A large-scale, high-fidelity synthetic dataset for multiple forest vision tasks},
   author={Feng, Zhengpeng and She, Yihang and Keshav, Srinivasan},
-  booktitle={SSRN: https://ssrn.com/abstract=4977986}
-  year={2024}
+  journal={Ecological Informatics},
+  volume={87},
+  pages={103085},
+  year={2025},
+  publisher={Elsevier}
 }
 ```
+
